@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+// Pastikan Anda juga memiliki kode Maps yang lengkap di sini jika ini adalah file yang sama
+// atau pastikan Maps diimpor dengan benar jika di file terpisah.
+
 class Maps extends StatelessWidget {
   const Maps({super.key});
 
@@ -38,12 +41,12 @@ class Maps extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
-                    context: context, 
+                    context: context,
+                    isScrollControlled: true, // Pertahankan ini jika konten bisa panjang
                     builder: (context) => DetailBottomSheet(data: data),
-                    );
+                  );
                 },
-              
-              child: const Icon(Icons.location_pin, color: Colors.red, size: 36),
+                child: const Icon(Icons.location_pin, color: Colors.red, size: 36),
               ),
             );
           }
@@ -80,13 +83,16 @@ class DetailBottomSheet extends StatelessWidget {
     final geopoint = data['location'] as GeoPoint;
     final timestamp = data['timestamp']?.toDate().toString() ?? 'N/A';
     final warna = data['prediction'] ?? 'Tidak ada';
-    // final lokasi = data['alamat'] ?? 'Tidak ada';
     final luas = data['luas'] ?? '-';
     final gkg = data['gkg'] ?? '-';
-    final rekomendasi = data['rekomendasi'] ?? '-';
+    String? rekomendasi = data['rekomendasi'] ?? '-';
+    if (rekomendasi != null && rekomendasi.toLowerCase().startsWith('rekomendasi pupuk urea:')) {
+      rekomendasi = rekomendasi.substring('rekomendasi pupuk urea:'.length).trim();
+    }
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return Container( // Gunakan Container untuk mengatur lebar
+      width: MediaQuery.of(context).size.width, // Atur lebar menjadi lebar penuh layar
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 24.0, bottom: 32.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +101,6 @@ class DetailBottomSheet extends StatelessWidget {
           const SizedBox(height: 8),
           Text('Timestamp: $timestamp', style: Theme.of(context).textTheme.bodySmall),
           Text('Klasifikasi warna: $warna', style: Theme.of(context).textTheme.bodySmall),
-          // Text('Lokasi: $lokasi'),
           Text('Koordinat: ${geopoint.latitude}, ${geopoint.longitude}', style: Theme.of(context).textTheme.bodySmall),
           Text('Rekomendasi pupuk urea: $rekomendasi', style: Theme.of(context).textTheme.bodySmall),
           Text('Luas sawah: $luas m2', style: Theme.of(context).textTheme.bodySmall),
@@ -105,4 +110,3 @@ class DetailBottomSheet extends StatelessWidget {
     );
   }
 }
-

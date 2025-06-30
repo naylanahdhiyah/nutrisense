@@ -2,14 +2,16 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
+import 'dart:convert'; // Tambahkan ini untuk json.decode
 
 class PredictionService {
   static Future<String> sendImageForPrediction(File imageFile) async {
-    final url = Uri.parse('http://192.168.2.103:5000/predict');
-    // final url = Uri.parse('http://172.20.10.2:5000/predict'); 
-    // final url = Uri.parse('https://41a4-103-24-56-37.ngrok-free.app/predict'); 
+    // final url = Uri.parse('http://192.168.2.103:5000/predict');
+    final url = Uri.parse('http://172.20.10.2:5000/predict');
+    // final url = Uri.parse('https://41a4-103-24-56-37.ngrok-free.app/predict');
+
     final request = http.MultipartRequest('POST', url);
-    request.headers.addAll({'Content-Type': 'multipart/form-data'});
+    // request.headers.addAll({'Content-Type': 'multipart/form-data'});
 
     final mimeType = lookupMimeType(imageFile.path);
     final file = await http.MultipartFile.fromPath(
@@ -24,23 +26,44 @@ class PredictionService {
       final responseBody = await http.Response.fromStream(response);
 
       if (response.statusCode == 200) {
-        return _parsePrediction(responseBody.body);
+
+        return _parsePredictionResult(responseBody.body);
       } else {
-        throw Exception('Server error: ${response.statusCode}');
+
+        try {
+          final Map<String, dynamic> errorData = json.decode(responseBody.body);
+          if (errorData.containsKey('error')) {
+
+            return 'Terjadi kesalahan: ${errorData['error']}';
+          } else {
+
+            return 'Terjadi kesalahan server: ${response.statusCode} - ${responseBody.body}';
+          }
+        } catch (e) {
+
+          return 'Terjadi kesalahan server: ${response.statusCode} - Gagal mengurai respons error: ${responseBody.body}';
+        }
       }
     } catch (e) {
-      throw Exception('Error sending image: $e');
+
+      return 'Terjadi kesalahan: Gagal mengirim gambar atau menerima respons: ${e.toString()}';
     }
   }
 
-  static String _parsePrediction(String responseBody) {
+
+  static String _parsePredictionResult(String responseBody) {
     try {
-      final decoded = responseBody.contains('result')
-          ? responseBody.split('"result":')[1].split('"')[1]
-          : responseBody;
-      return decoded;
+      final Map<String, dynamic> decoded = json.decode(responseBody);
+
+      if (decoded.containsKey('result')) {
+        return decoded['result'].toString();
+      } else {
+
+        return 'Hasil prediksi tidak ditemukan dalam respons: $responseBody';
+      }
     } catch (e) {
-      return responseBody;
+
+      return 'Gagal mengurai hasil prediksi: $responseBody. Error: $e';
     }
   }
 }

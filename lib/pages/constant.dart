@@ -20,7 +20,6 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
   return SizedBox(
     width: double.infinity,
-    height: 36,
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryGreen,
@@ -54,7 +53,6 @@ class SecondaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
   return SizedBox(
     width: double.infinity,
-    height: 36,
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: grey,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nutrisense/data/weather.dart';
-import 'package:nutrisense/pages/constant.dart';
+import 'package:nutrisense/pages/constant.dart'; // Pastikan path ini benar
 import 'package:intl/intl.dart';
 
-import 'package:nutrisense/utils/location_util.dart'; 
-import 'package:nutrisense/services/weatherAPI.dart'; 
+import 'package:nutrisense/utils/location_util.dart'; // Pastikan path ini benar
+import 'package:nutrisense/services/weatherAPI.dart'; // Pastikan path ini benar
 
 class WeatherCard extends StatefulWidget {
   const WeatherCard({super.key});
@@ -14,16 +14,24 @@ class WeatherCard extends StatefulWidget {
 }
 
 class _WeatherCardState extends State<WeatherCard> {
+  // Inisialisasi _weatherFuture secara langsung di initState
+  // Tidak perlu 'late' jika langsung diinisialisasi di initState
   late Future<WeatherModel> _weatherFuture;
   String _locationName = 'Mengambil lokasi...';
 
   @override
   void initState() {
     super.initState();
-    _loadLocationAndWeather();
+    // Inisialisasi _weatherFuture di sini.
+    // FutureBuilder akan menangani status loading-nya.
+    _weatherFuture = fetchWeatherBMKG();
+
+    // Panggil fungsi untuk memuat lokasi secara terpisah
+    _loadLocationName();
   }
 
-  Future<void> _loadLocationAndWeather() async {
+  // Metode terpisah untuk memuat nama lokasi
+  Future<void> _loadLocationName() async {
     try {
       final location = await getCurrentLocation();
       if (location != null) {
@@ -46,12 +54,6 @@ class _WeatherCardState extends State<WeatherCard> {
           _locationName = 'Gagal mengambil lokasi';
         });
       }
-    }
-
-    if (mounted) {
-      setState(() {
-        _weatherFuture = fetchWeatherBMKG();
-      });
     }
   }
 
@@ -77,19 +79,53 @@ class _WeatherCardState extends State<WeatherCard> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<WeatherModel>(
-      future: _weatherFuture,
+      future: _weatherFuture, // Future ini sudah diinisialisasi di initState
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          // Tampilkan indikator loading di tengah layar saat data cuaca sedang diambil
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            height: 150, // Sesuaikan tinggi agar tidak terlalu kosong
+            child: const Center(child: CircularProgressIndicator()),
+          );
         } else if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              'Gagal memuat cuaca:\n${snapshot.error}',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.red),
+          // Tampilkan pesan error jika terjadi kesalahan
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.red[50],
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.red.withOpacity(0.1),
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                'Gagal memuat cuaca:\n${snapshot.error}',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.red),
+              ),
             ),
           );
         } else if (snapshot.hasData) {
+          // Tampilkan data cuaca jika sudah berhasil diambil
           final weather = snapshot.data!;
           return Column(
             children: [
@@ -110,17 +146,31 @@ class _WeatherCardState extends State<WeatherCard> {
                 child: _buildWeatherContent(weather),
               ),
               const SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
+              // Container ini tidak perlu BoxDecoration jika hanya Padding
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: _buildWeatherDetailsRow(weather),
               ),
             ],
           );
         } else {
-          return const Text('Data cuaca tidak tersedia');
+          // Kasus lain (misalnya tidak ada data)
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: const Center(child: Text('Data cuaca tidak tersedia')),
+          );
         }
       },
     );
@@ -136,7 +186,7 @@ class _WeatherCardState extends State<WeatherCard> {
             const SizedBox(width: 4),
             Expanded(
               child: Text(
-                _locationName,
+                _locationName, // Menggunakan _locationName yang dimuat terpisah
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.labelSmall,
@@ -151,7 +201,7 @@ class _WeatherCardState extends State<WeatherCard> {
             Icon(
               _mapWeatherToIcon(weather.description),
               size: 40,
-              color: babyBlue,
+              color: babyBlue, // Pastikan 'babyBlue' didefinisikan di constant.dart
             ),
             const SizedBox(width: 24),
             Row(
@@ -203,7 +253,7 @@ class _WeatherCardState extends State<WeatherCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(width: 18),
+                const SizedBox(width: 18), // Memberikan sedikit ruang
                 Icon(icon, color: babyBlue, size: 18),
               ],
             ),
@@ -225,28 +275,25 @@ class _WeatherCardState extends State<WeatherCard> {
   }
 
   Widget _buildWeatherDetailsRow(WeatherModel weather) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildWeatherDetail(Icons.opacity, '${weather.humidity} %', 'Kelembaban'),
-              _buildWeatherDetail(Icons.air, '${weather.windSpeed.toStringAsFixed(1)} km/h', 'Kcptan Angin'),
-              _buildWeatherDetail(Icons.cloud_queue, '${weather.cloudCover} %', 'Tutupan Awan'),
-            ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildWeatherDetail(Icons.opacity, '${weather.humidity} %', 'Kelembaban'),
+            _buildWeatherDetail(Icons.air, '${weather.windSpeed.toStringAsFixed(1)} km/h', 'Kcptan Angin'),
+            _buildWeatherDetail(Icons.cloud_queue, '${weather.cloudCover} %', 'Tutupan Awan'),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Cuaca disinkronkan secara berkala dengan data BMKG',
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: Colors.grey[700],
           ),
-          const SizedBox(height: 8),
-          Text(
-            'Cuaca disinkronkan secara berkala dengan data BMKG',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Colors.grey[700],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
