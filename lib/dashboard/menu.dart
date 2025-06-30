@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:nutrisense/pages/constant.dart'; // Jika ini digunakan, pastikan tidak dihapus
 import 'package:nutrisense/pages/scan.dart'; 
 import 'package:nutrisense/pages/histori.dart'; 
+import 'package:nutrisense/pages/insight.dart';
 
 class MenuSection extends StatelessWidget {
   const MenuSection({super.key});
@@ -45,7 +46,10 @@ class MenuSection extends StatelessWidget {
             imagePath: 'assets/icons/card_insight.png', 
             // label: 'Petunjuk Penggunaan', 
             onTap: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => GuidePage()));
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => InsightPage()),
+              );
             },
           ),
         ],

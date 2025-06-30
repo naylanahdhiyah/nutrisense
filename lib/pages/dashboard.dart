@@ -34,7 +34,7 @@ class _DashboardState extends State<Dashboard> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   'Menu',
-                  style: Theme.of(context).textTheme.headlineSmall
+                  style: Theme.of(context).textTheme.headlineMedium
                 ),
               ),
               const SizedBox(height: 8),
@@ -47,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   'Peta Warna',
-                  style: Theme.of(context).textTheme.headlineSmall
+                  style: Theme.of(context).textTheme.headlineMedium
                 ),
               ),
               const SizedBox(height: 8),

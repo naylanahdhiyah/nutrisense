@@ -5,9 +5,9 @@ import 'package:mime/mime.dart';
 
 class PredictionService {
   static Future<String> sendImageForPrediction(File imageFile) async {
-    // final url = Uri.parse('http://192.168.2.101:5000/predict');
+    final url = Uri.parse('http://192.168.2.103:5000/predict');
     // final url = Uri.parse('http://172.20.10.2:5000/predict'); 
-    final url = Uri.parse('https://5e86-103-24-58-37.ngrok-free.app/predict'); 
+    // final url = Uri.parse('https://41a4-103-24-56-37.ngrok-free.app/predict'); 
     final request = http.MultipartRequest('POST', url);
     request.headers.addAll({'Content-Type': 'multipart/form-data'});
 

@@ -19,7 +19,7 @@ class DashboardHeader extends StatelessWidget {
               children: [
                 Text(
                   "Dashboard",
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
               ],
             ),

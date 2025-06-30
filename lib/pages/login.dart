@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:google_fonts/google_fonts.dart'; // Tidak perlu lagi diimpor di sini
+import 'package:nutrisense/pages/constant.dart';
 import 'package:nutrisense/services/auth.dart';
 import 'package:nutrisense/widget_tree.dart';
 
@@ -19,32 +19,92 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerPassword = TextEditingController();
 
   Future<void> signInWithEmailAndPassword() async {
+    if (_controllerEmail.text.isEmpty || _controllerPassword.text.isEmpty) {
+      setState(() {
+        errorMessage = 'Email dan kata sandi tidak boleh kosong.';
+      });
+      return;
+    }
+
     try {
       await Auth().signInWithEmailAndPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
-      // Kalau sukses login, pindah ke Dashboard
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => WidgetTree()),
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
-        errorMessage = e.message;
+        switch (e.code) {
+          case 'user-not-found':
+            errorMessage = 'Pengguna dengan email ini tidak ditemukan. Silakan daftar.';
+            break;
+          case 'wrong-password':
+            errorMessage = 'Kata sandi salah. Mohon periksa kembali.';
+            break;
+          case 'invalid-email':
+            errorMessage = 'Format email tidak valid. Pastikan email benar.';
+            break;
+          case 'user-disabled':
+            errorMessage = 'Akun ini telah dinonaktifkan. Silakan hubungi dukungan.';
+            break;
+          case 'too-many-requests':
+            errorMessage = 'Terlalu banyak percobaan. Coba lagi nanti.';
+            break;
+          default:
+            errorMessage = 'Terjadi kesalahan saat login: ${e.message}';
+            break;
+        }
       });
     }
   }
 
   Future<void> createUserWithEmailAndPassword() async {
+    if (_controllerEmail.text.isEmpty || _controllerPassword.text.isEmpty) {
+      setState(() {
+        errorMessage = 'Email dan kata sandi tidak boleh kosong.';
+      });
+      return;
+    }
+
     try {
       await Auth().createUserWithEmailAndPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
+
+      setState(() {
+        errorMessage = ''; 
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Akun berhasil dibuat! Silakan login.'),
+          backgroundColor: Colors.green, 
+        ),
+      );
+
+      setState(() {
+        isLogin = true; 
+      });
+      
     } on FirebaseAuthException catch (e) {
       setState(() {
-        errorMessage = e.message;
+        switch (e.code) {
+          case 'email-already-in-use':
+            errorMessage = 'Email ini sudah terdaftar. Silakan login atau gunakan email lain.';
+            break;
+          case 'weak-password':
+            errorMessage = 'Kata sandi terlalu lemah. Gunakan minimal 6 karakter.';
+            break;
+          case 'invalid-email':
+            errorMessage = 'Format email tidak valid. Pastikan email benar.';
+            break;
+          default:
+            errorMessage = 'Terjadi kesalahan saat pendaftaran: ${e.message}';
+            break;
+        }
       });
     }
   }
@@ -52,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _title() {
     return Text(
       'Mulai',
-      style: Theme.of(context).textTheme.headlineMedium, 
+      style: Theme.of(context).textTheme.headlineMedium,
     );
   }
 
@@ -62,12 +122,13 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Text(
           title[0].toUpperCase() + title.substring(1),
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 8),
         TextField(
           controller: controller,
           obscureText: isPassword,
+          style: Theme.of(context).textTheme.bodySmall,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.grey[200],
@@ -91,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Text(
         errorMessage ?? '',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
           color: Colors.red,
           fontWeight: FontWeight.w600,
         ),
@@ -106,6 +167,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
         child: Text(
           isLogin ? 'Login' : 'Register',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: primaryGreen),
         ),
       ),
     );
@@ -120,6 +182,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       child: Text(
         isLogin ? 'Belum punya akun? Daftar' : 'Sudah punya akun? Login',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: primaryGreen),
       ),
     );
   }

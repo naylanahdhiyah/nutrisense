@@ -23,7 +23,7 @@ class _HistoriPageState extends State<HistoriPage> {
             .doc(userId)
             .collection('predictions')
             .orderBy('timestamp', descending: true)
-            .limit(10)
+            .limit(25)
             .get();
 
         final predictions = querySnapshot.docs.map((doc) {
@@ -77,10 +77,11 @@ class _HistoriPageState extends State<HistoriPage> {
                     leading: const Icon(Icons.calendar_today),
                     title: Text(
                       prediction['prediction'] ?? 'No prediction available',
-                      style: const TextStyle(fontSize: 14),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     subtitle: Text(
                       'Waktu: ${prediction['timestamp']?.toDate() ?? 'N/A'}',
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                     onTap: () {
                       final docId = prediction['id'];

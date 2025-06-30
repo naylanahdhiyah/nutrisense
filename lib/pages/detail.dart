@@ -123,37 +123,55 @@ class _DetailHistoriPageState extends State<DetailHistoriPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Detail Histori",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: Colors.white,
+    appBar: AppBar(
+      centerTitle: true,
+      title: const Text(
+        "Detail Histori",
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : errorMsg != null
-              ? Center(child: Text(errorMsg!))
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Prediksi: $prediction"),
-                      SizedBox(height: 8),
-                      Text("Waktu: $timestamp"),
-                      SizedBox(height: 8),
-                      Text("Lokasi: $lokasiTeks"),
-                      SizedBox(height: 8),
-                      Text("$rekomendasi"),
-                      SizedBox(height: 16),
-                      buildMap(),
-                    ],
-                  ),
+    ),
+    body: isLoading
+        ? Center(child: CircularProgressIndicator())
+        : errorMsg != null
+            ? Center(
+                child: Text(
+                  errorMsg!,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
-    );
-  }
+              )
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Prediksi: $prediction",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "Waktu: $timestamp",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "Lokasi: $lokasiTeks",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "$rekomendasi",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    SizedBox(height: 16),
+                    buildMap(),
+                  ],
+                ),
+              ),
+  );
+}
+
 }

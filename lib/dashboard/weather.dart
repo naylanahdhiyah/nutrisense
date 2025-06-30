@@ -159,7 +159,7 @@ class _WeatherCardState extends State<WeatherCard> {
               children: [
                 Text(
                   weather.temperature.toStringAsFixed(0),
-                  style: Theme.of(context).textTheme.displayMedium,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 0.0),
@@ -173,11 +173,11 @@ class _WeatherCardState extends State<WeatherCard> {
               children: [
                 Text(
                   weather.description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Text(
                   _getFormattedDate(),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),
@@ -227,12 +227,24 @@ class _WeatherCardState extends State<WeatherCard> {
   Widget _buildWeatherDetailsRow(WeatherModel weather) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildWeatherDetail(Icons.opacity, '${weather.humidity} %', 'Kelembaban'),
-          _buildWeatherDetail(Icons.air, '${weather.windSpeed.toStringAsFixed(1)} km/h', 'Kcptan Angin'),
-          _buildWeatherDetail(Icons.cloud_queue, '${weather.cloudCover} %', 'Tutupan Awan'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildWeatherDetail(Icons.opacity, '${weather.humidity} %', 'Kelembaban'),
+              _buildWeatherDetail(Icons.air, '${weather.windSpeed.toStringAsFixed(1)} km/h', 'Kcptan Angin'),
+              _buildWeatherDetail(Icons.cloud_queue, '${weather.cloudCover} %', 'Tutupan Awan'),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Cuaca disinkronkan secara berkala dengan data BMKG',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: Colors.grey[700],
+            ),
+          ),
         ],
       ),
     );

@@ -26,10 +26,10 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
         textTheme: TextTheme(
           displayLarge: GoogleFonts.poppins(fontSize: 26, fontWeight: FontWeight.bold),
-          displayMedium: GoogleFonts.poppins(fontSize: 26, fontWeight: FontWeight.w700),
+          displayMedium: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600), //font dashboard
           displaySmall: GoogleFonts.poppins(fontSize: 26, fontWeight: FontWeight.w500),
           headlineLarge: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
-          headlineMedium: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700),
+          headlineMedium: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600), //judul menu
           headlineSmall: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w500),
           bodyLarge: GoogleFonts.poppins(fontSize: 14, fontWeight:FontWeight.bold),
           bodyMedium: GoogleFonts.poppins(fontSize: 14,fontWeight: FontWeight.w700),
