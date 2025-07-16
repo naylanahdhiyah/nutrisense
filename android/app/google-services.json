@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "412553065949",
-    "project_id": "nutrisense-7af0a",
-    "storage_bucket": "nutrisense-7af0a.firebasestorage.app"
+    "project_number": "replace with your project",
+    "project_id": "replace with your project",
+    "storage_bucket": "replace with your project"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:412553065949:android:916da4ed35c31a3c543234",
+        "mobilesdk_app_id": "replace with your project",
         "android_client_info": {
           "package_name": "com.example.nutrisense"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD5uS27koMCvnRhYJ9t80JF_kP0y_PxJgo"
+          "current_key": "replace with your project"
         }
       ],
       "services": {
