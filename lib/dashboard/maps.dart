@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-// Pastikan Anda juga memiliki kode Maps yang lengkap di sini jika ini adalah file yang sama
-// atau pastikan Maps diimpor dengan benar jika di file terpisah.
 
 class Maps extends StatelessWidget {
   const Maps({super.key});
@@ -42,7 +40,7 @@ class Maps extends StatelessWidget {
                 onTap: () {
                   showModalBottomSheet(
                     context: context,
-                    isScrollControlled: true, // Pertahankan ini jika konten bisa panjang
+                    isScrollControlled: true, 
                     builder: (context) => DetailBottomSheet(data: data),
                   );
                 },
@@ -90,8 +88,8 @@ class DetailBottomSheet extends StatelessWidget {
       rekomendasi = rekomendasi.substring('rekomendasi pupuk urea:'.length).trim();
     }
 
-    return Container( // Gunakan Container untuk mengatur lebar
-      width: MediaQuery.of(context).size.width, // Atur lebar menjadi lebar penuh layar
+    return Container( 
+      width: MediaQuery.of(context).size.width, 
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 24.0, bottom: 32.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -4,7 +4,7 @@ String getClassDescription(String classificationCode) {
     'N23': 'Antara 2 dan 3',
     'N34': 'Antara 3 dan 4',
     'N45': 'Antara 4 dan 5',
-    // Tambahkan klasifikasi lain di sini
+
   };
   return classificationColor[classificationCode] ?? classificationCode;
 }

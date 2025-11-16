@@ -42,14 +42,14 @@ class WelcomePage extends StatelessWidget {
         ),
       ),
 
-      // Tombol selalu di bawah layar
+     
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SizedBox(
           width: double.infinity,
-          // Mengganti ElevatedButton dengan PrimaryButton dari constant.dart
-          child: PrimaryButton( // Menggunakan PrimaryButton
-            text: 'Mulai', // Menyerahkan teks ke PrimaryButton
+         
+          child: PrimaryButton( 
+            text: 'Mulai', 
             onPressed: () {
               Navigator.push(
                 context,

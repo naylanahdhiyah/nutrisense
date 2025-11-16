@@ -2,14 +2,12 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
-import 'dart:convert'; // Tambahkan ini untuk json.decode
+import 'dart:convert'; 
 
 class PredictionService {
   static Future<String> sendImageForPrediction(File imageFile) async {
-    // final url = Uri.parse('http://192.168.2.103:5000/predict');
-    final url = Uri.parse('http://172.20.10.2:5000/predict');
-    // final url = Uri.parse('https://41a4-103-24-56-37.ngrok-free.app/predict');
-
+    final url = Uri.parse('http://your.url/predict');
+    
     final request = http.MultipartRequest('POST', url);
     // request.headers.addAll({'Content-Type': 'multipart/form-data'});
 

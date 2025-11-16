@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nutrisense/data/weather.dart';
-import 'package:nutrisense/pages/constant.dart'; // Pastikan path ini benar
+import 'package:nutrisense/pages/constant.dart';
 import 'package:intl/intl.dart';
 
-import 'package:nutrisense/utils/location_util.dart'; // Pastikan path ini benar
-import 'package:nutrisense/services/weatherAPI.dart'; // Pastikan path ini benar
-
+import 'package:nutrisense/utils/location_util.dart';
+import 'package:nutrisense/services/weatherAPI.dart'; 
 class WeatherCard extends StatefulWidget {
   const WeatherCard({super.key});
 
@@ -14,23 +13,20 @@ class WeatherCard extends StatefulWidget {
 }
 
 class _WeatherCardState extends State<WeatherCard> {
-  // Inisialisasi _weatherFuture secara langsung di initState
-  // Tidak perlu 'late' jika langsung diinisialisasi di initState
+
   late Future<WeatherModel> _weatherFuture;
   String _locationName = 'Mengambil lokasi...';
 
   @override
   void initState() {
     super.initState();
-    // Inisialisasi _weatherFuture di sini.
-    // FutureBuilder akan menangani status loading-nya.
     _weatherFuture = fetchWeatherBMKG();
 
-    // Panggil fungsi untuk memuat lokasi secara terpisah
+    
     _loadLocationName();
   }
 
-  // Metode terpisah untuk memuat nama lokasi
+  
   Future<void> _loadLocationName() async {
     try {
       final location = await getCurrentLocation();
@@ -79,10 +75,10 @@ class _WeatherCardState extends State<WeatherCard> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<WeatherModel>(
-      future: _weatherFuture, // Future ini sudah diinisialisasi di initState
+      future: _weatherFuture, 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // Tampilkan indikator loading di tengah layar saat data cuaca sedang diambil
+          
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(16),
@@ -97,11 +93,11 @@ class _WeatherCardState extends State<WeatherCard> {
                 ),
               ],
             ),
-            height: 150, // Sesuaikan tinggi agar tidak terlalu kosong
+            height: 150, 
             child: const Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasError) {
-          // Tampilkan pesan error jika terjadi kesalahan
+          
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(16),
@@ -125,7 +121,7 @@ class _WeatherCardState extends State<WeatherCard> {
             ),
           );
         } else if (snapshot.hasData) {
-          // Tampilkan data cuaca jika sudah berhasil diambil
+          
           final weather = snapshot.data!;
           return Column(
             children: [
@@ -146,7 +142,7 @@ class _WeatherCardState extends State<WeatherCard> {
                 child: _buildWeatherContent(weather),
               ),
               const SizedBox(height: 16),
-              // Container ini tidak perlu BoxDecoration jika hanya Padding
+             
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: _buildWeatherDetailsRow(weather),
@@ -154,7 +150,7 @@ class _WeatherCardState extends State<WeatherCard> {
             ],
           );
         } else {
-          // Kasus lain (misalnya tidak ada data)
+          
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(16),
@@ -186,7 +182,7 @@ class _WeatherCardState extends State<WeatherCard> {
             const SizedBox(width: 4),
             Expanded(
               child: Text(
-                _locationName, // Menggunakan _locationName yang dimuat terpisah
+                _locationName, 
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.labelSmall,
@@ -201,7 +197,7 @@ class _WeatherCardState extends State<WeatherCard> {
             Icon(
               _mapWeatherToIcon(weather.description),
               size: 40,
-              color: babyBlue, // Pastikan 'babyBlue' didefinisikan di constant.dart
+              color: babyBlue, 
             ),
             const SizedBox(width: 24),
             Row(
@@ -253,7 +249,7 @@ class _WeatherCardState extends State<WeatherCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(width: 18), // Memberikan sedikit ruang
+                const SizedBox(width: 18), 
                 Icon(icon, color: babyBlue, size: 18),
               ],
             ),

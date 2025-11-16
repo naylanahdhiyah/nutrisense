@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:nutrisense/pages/constant.dart'; // Jika ini digunakan, pastikan tidak dihapus
+// import 'package:nutrisense/pages/constant.dart'; 
 import 'package:nutrisense/pages/scan.dart'; 
 import 'package:nutrisense/pages/histori.dart'; 
 import 'package:nutrisense/pages/insight.dart';

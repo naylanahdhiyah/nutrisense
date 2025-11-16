@@ -6,46 +6,46 @@ class InsightPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Pastikan latar belakang putih
+      backgroundColor: Colors.white, 
       appBar: AppBar(
-        // Header (AppBar) tidak diubah sesuai permintaan
+        
         centerTitle: true,
         title: const Text(
           "Petunjuk Penggunaan",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
-      body: SingleChildScrollView( // Menggunakan SingleChildScrollView agar bisa discroll
-        padding: const EdgeInsets.all(20.0), // Padding yang sedikit lebih besar
+      body: SingleChildScrollView( 
+        padding: const EdgeInsets.all(20.0), 
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center, // Mengubah alignment kolom utama menjadi center
+          crossAxisAlignment: CrossAxisAlignment.center, 
           children: [
-            // Judul Utama dengan Ikon di atas
-            Column( // Mengubah Row menjadi Column
+            
+            Column( 
               children: [
-                Icon(Icons.grass, size: 40, color: Colors.green.shade700), // Ikon rumput, ukuran sedikit lebih besar
-                const SizedBox(height: 10), // Spasi antara ikon dan teks
+                Icon(Icons.grass, size: 40, color: Colors.green.shade700), 
+                const SizedBox(height: 10), 
                 Text(
                   "Cara Menggunakan Aplikasi NutriSense",
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.green.shade800,
                       ),
-                  textAlign: TextAlign.center, // Pusatkan teks
+                  textAlign: TextAlign.center, 
                 ),
               ],
             ),
             const SizedBox(height: 16),
             Text(
               "Selamat datang di panduan penggunaan NutriSense! Ikuti langkah-langkah mudah di bawah ini untuk memulai:",
-              style: Theme.of(context).textTheme.bodySmall?.copyWith( // Mengubah ke bodySmall
+              style: Theme.of(context).textTheme.bodySmall?.copyWith( 
                     color: Colors.grey[700],
                   ),
-              textAlign: TextAlign.center, // Pusatkan teks ini
+              textAlign: TextAlign.center, 
             ),
             const SizedBox(height: 24),
 
-            // Daftar Langkah-Langkah (tetap rata kiri di dalam StepTile)
+            
             StepTile(
               number: 1,
               text: 'Buka aplikasi dan pilih menu “Scan Tanaman” dari halaman utama.',
@@ -81,11 +81,11 @@ class InsightPage extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               "Semoga panduan ini membantu Anda mendapatkan hasil terbaik dari NutriSense!",
-              style: Theme.of(context).textTheme.bodySmall?.copyWith( // Mengubah ke bodySmall
+              style: Theme.of(context).textTheme.bodySmall?.copyWith( 
                     fontStyle: FontStyle.italic,
                     color: Colors.grey[600],
                   ),
-              textAlign: TextAlign.center, // Pusatkan teks ini
+              textAlign: TextAlign.center, 
             ),
             const SizedBox(height: 20),
           ],
@@ -104,12 +104,12 @@ class StepTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16.0), // Margin bawah antar langkah
-      padding: const EdgeInsets.all(16.0), // Padding di dalam setiap langkah
+      margin: const EdgeInsets.only(bottom: 16.0), 
+      padding: const EdgeInsets.all(16.0), 
       decoration: BoxDecoration(
-        color: Colors.green.shade50, // Latar belakang hijau muda
-        borderRadius: BorderRadius.circular(12), // Sudut membulat
-        boxShadow: [ // Sedikit bayangan untuk memberikan kedalaman
+        color: Colors.green.shade50, 
+        borderRadius: BorderRadius.circular(12), 
+        boxShadow: [ 
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
             blurRadius: 5,
@@ -121,23 +121,23 @@ class StepTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            radius: 16, // Ukuran CircleAvatar sedikit lebih besar
-            backgroundColor: Colors.green.shade600, // Warna hijau yang lebih gelap
+            radius: 16,
+            backgroundColor: Colors.green.shade600, 
             child: Text(
               number.toString(),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith( // Mengubah ke bodySmall
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          const SizedBox(width: 16), // Spasi lebih besar antara nomor dan teks
+          const SizedBox(width: 16), 
           Expanded(
             child: Text(
               text,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith( // Mengubah ke bodySmall
+              style: Theme.of(context).textTheme.bodySmall?.copyWith( 
                 color: Colors.black87,
-                height: 1.5, // Spasi baris untuk keterbacaan
+                height: 1.5, 
               ),
             ),
           ),

@@ -28,7 +28,7 @@ class PrimaryButton extends StatelessWidget {
       height: 36,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryGreen, // Pastikan primaryGreen didefinisikan di constant.dart
+          backgroundColor: primaryGreen, 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -62,7 +62,7 @@ class SecondaryButton extends StatelessWidget {
       height: 36,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: grey, // Pastikan grey didefinisikan di constant.dart
+          backgroundColor: grey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -86,9 +86,9 @@ class ScanPage extends StatefulWidget {
 class _ScanPageState extends State<ScanPage> {
   File? _selectedImage;
   bool _isLoading = false;
-  String? _predictionResult; // Stores only the classification result (e.g., 'N23')
-  String? _fertilizerRecommendation; // Stores the fertilizer recommendation
-  bool _showRecommendationInput = false; // Controls visibility of input fields
+  String? _predictionResult; 
+  String? _fertilizerRecommendation;
+  bool _showRecommendationInput = false; 
 
   final TextEditingController _luasController = TextEditingController();
   final TextEditingController _gkgController = TextEditingController();
@@ -112,7 +112,7 @@ class _ScanPageState extends State<ScanPage> {
   Future<void> _showImageSourceSheet() async {
     await showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder( // Tambahkan const
+      shape: const RoundedRectangleBorder( 
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
@@ -121,7 +121,7 @@ class _ScanPageState extends State<ScanPage> {
           child: Wrap(
             children: [
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: Colors.green), // Tambahkan const
+                leading: const Icon(Icons.camera_alt, color: Colors.green), 
                 title: Text(
                   'Ambil dari Kamera',
                   style: Theme.of(context).textTheme.bodySmall,
@@ -132,7 +132,7 @@ class _ScanPageState extends State<ScanPage> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_library, color: Colors.green), // Tambahkan const
+                leading: const Icon(Icons.photo_library, color: Colors.green), 
                 title: Text(
                   'Pilih dari Galeri',
                   style: Theme.of(context).textTheme.bodySmall,
@@ -152,20 +152,20 @@ class _ScanPageState extends State<ScanPage> {
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
-      if (mounted) { // Pastikan widget masih mounted
+      if (mounted) { 
         setState(() {
           _selectedImage = File(pickedFile.path);
-          _predictionResult = null; // Reset prediction when a new image is picked
-          _fertilizerRecommendation = null; // Reset recommendation
-          _showRecommendationInput = false; // Hide input fields
-          _luasController.clear(); // Clear input fields
-          _gkgController.clear(); // Clear input fields
+          _predictionResult = null; 
+          _fertilizerRecommendation = null; 
+          _showRecommendationInput = false; 
+          _luasController.clear(); 
+          _gkgController.clear(); 
         });
       }
-      // Automatically send for prediction after image is picked
+      
       _sendImageForPrediction();
     } else {
-      // Jika pengguna membatalkan pemilihan gambar, kembali ke Dashboard
+      
       if (mounted) {
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => Dashboard()),
@@ -188,7 +188,7 @@ class _ScanPageState extends State<ScanPage> {
     if (mounted) {
       setState(() {
         _isLoading = true;
-        _predictionResult = null; // Clear previous result
+        _predictionResult = null; 
       });
     }
 
@@ -217,7 +217,7 @@ class _ScanPageState extends State<ScanPage> {
     if (_predictionResult == null || _predictionResult!.startsWith('Terjadi kesalahan')) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Silakan lakukan prediksi gambar yang berhasil terlebih dahulu')), // Tambahkan const
+          const SnackBar(content: Text('Silakan lakukan prediksi gambar yang berhasil terlebih dahulu')), 
         );
       }
       return;
@@ -226,7 +226,7 @@ class _ScanPageState extends State<ScanPage> {
     if (_gkgController.text.isEmpty || _luasController.text.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Silakan isi GKG dan Luas Sawah')), // Tambahkan const
+          const SnackBar(content: Text('Silakan isi GKG dan Luas Sawah')), 
         );
       }
       return;
@@ -240,23 +240,22 @@ class _ScanPageState extends State<ScanPage> {
       final double luasMeter = double.tryParse(_luasController.text) ?? 0.0;
       final int gkg = int.tryParse(_gkgController.text) ?? 0;
 
-      // Pastikan _predictionResult adalah kode klasifikasi yang valid (misal: N23)
-      // sebelum memanggil getUreaRecommendation
+      
       final String recommendationResult = getUreaRecommendation(_predictionResult!, gkg, luasMeter);
-      final location = await getCurrentLocation(); // Get location here
+      final location = await getCurrentLocation(); 
 
       await FirebaseService.uploadResultToFirebase(
-        _predictionResult!, // Simpan kode klasifikasi asli
+        _predictionResult!, 
         location,
         gkg: gkg.toDouble(),
         luas: luasMeter,
-        rekomendasi: recommendationResult, // Simpan rekomendasi yang sudah diformat
+        rekomendasi: recommendationResult,
       );
 
       if (mounted) {
         setState(() {
           _isLoading = false;
-          _fertilizerRecommendation = recommendationResult; // Simpan rekomendasi yang sudah diformat
+          _fertilizerRecommendation = recommendationResult; 
         });
       }
     } catch (e) {
@@ -265,7 +264,7 @@ class _ScanPageState extends State<ScanPage> {
           _isLoading = false;
           _fertilizerRecommendation = 'Terjadi kesalahan: ${e.toString()}';
         });
-        ScaffoldMessenger.of(context).showSnackBar( // Tampilkan SnackBar untuk error
+        ScaffoldMessenger.of(context).showSnackBar( 
           SnackBar(content: Text('Error menghitung rekomendasi: ${e.toString()}')),
         );
       }
@@ -274,7 +273,7 @@ class _ScanPageState extends State<ScanPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Dapatkan deskripsi klasifikasi warna menggunakan fungsi Anda
+    
     final String classificationDisplay =
         _predictionResult != null && !_predictionResult!.startsWith('Terjadi kesalahan')
             ? getClassDescription(_predictionResult!)
@@ -290,7 +289,7 @@ class _ScanPageState extends State<ScanPage> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20), // Tambahkan const
+        padding: const EdgeInsets.all(20), 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -302,29 +301,29 @@ class _ScanPageState extends State<ScanPage> {
                     image: FileImage(_selectedImage!),
                     fit: BoxFit.cover,
                   ),
-                  borderRadius: BorderRadius.circular(12), // Tambahkan border radius
+                  borderRadius: BorderRadius.circular(12), 
                 ),
               ),
-              const SizedBox(height: 16), // Tambahkan const
+              const SizedBox(height: 16),
             ],
 
-            // 1. Klasifikasi warna
+           
             if (_isLoading && _predictionResult == null)
-              const Center(child: CircularProgressIndicator()) // Tambahkan const
+              const Center(child: CircularProgressIndicator()) 
             else if (_predictionResult != null)
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0), // Tambahkan const
+                  padding: const EdgeInsets.all(16.0), 
                   child: Row(
                     children: [
-                      const Icon(Icons.eco, color: Colors.green, size: 30), // Tambahkan const
-                      const SizedBox(width: 10), // Tambahkan const
+                      const Icon(Icons.eco, color: Colors.green, size: 30), 
+                      const SizedBox(width: 10), 
                       Expanded(
                         child: Text(
-                          // Gunakan classificationDisplay di sini
+                          
                           'Klasifikasi Warna: \n $classificationDisplay',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
@@ -334,20 +333,20 @@ class _ScanPageState extends State<ScanPage> {
                 ),
               ),
 
-            const SizedBox(height: 16), // Tambahkan const
+            const SizedBox(height: 16), 
 
-            // 2. Rekomendasi (jika sudah dihitung)
+           
             if (_fertilizerRecommendation != null)
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0), // Tambahkan const
+                  padding: const EdgeInsets.all(16.0), 
                   child: Row(
                     children: [
-                      const Icon(Icons.agriculture, color: Colors.blue, size: 30), // Tambahkan const
-                      const SizedBox(width: 10), // Tambahkan const
+                      const Icon(Icons.agriculture, color: Colors.blue, size: 30), 
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           'Rekomendasi Pemupukan: $_fertilizerRecommendation',
@@ -359,9 +358,9 @@ class _ScanPageState extends State<ScanPage> {
                 ),
               ),
 
-            const SizedBox(height: 24), // Tambahkan const
+            const SizedBox(height: 24), 
 
-            // 3. Input Field
+           
             if (_showRecommendationInput)
               Column(
                 children: [
@@ -369,12 +368,12 @@ class _ScanPageState extends State<ScanPage> {
                     gkgController: _gkgController,
                     luasController: _luasController,
                   ),
-                  const SizedBox(height: 20), // Tambahkan const
+                  const SizedBox(height: 20), 
                 ],
               ),
 
-            // 4. Tombol di paling bawah
-            const SizedBox(height: 20), // Tambahkan const
+           
+            const SizedBox(height: 20), 
             if (_predictionResult != null && !_showRecommendationInput) ...[
               PrimaryButton(
                 text: 'Lihat Rekomendasi Pemupukan',
@@ -382,25 +381,25 @@ class _ScanPageState extends State<ScanPage> {
                   if (mounted) {
                     setState(() {
                       _showRecommendationInput = true;
-                      _fertilizerRecommendation = null; // Reset rekomendasi saat menampilkan input
+                      _fertilizerRecommendation = null; 
                     });
                   }
                 },
               ),
-              const SizedBox(height: 10), // Tambahkan const
+              const SizedBox(height: 10), 
               SecondaryButton(
                 text: 'Selesai',
                 onPressed: () async {
-                  // Pastikan _predictionResult bukan null dan bukan pesan error
+                 
                   if (_predictionResult != null && !_predictionResult!.startsWith('Terjadi kesalahan')) {
                     try {
                       final location = await getCurrentLocation();
                       await FirebaseService.uploadResultToFirebase(
-                        _predictionResult!, // Simpan kode klasifikasi asli
+                        _predictionResult!, 
                         location,
                         gkg: double.tryParse(_gkgController.text) ?? 0.0,
                         luas: double.tryParse(_luasController.text) ?? 0.0,
-                        rekomendasi: _fertilizerRecommendation ?? '-', // Gunakan rekomendasi yang sudah dihitung
+                        rekomendasi: _fertilizerRecommendation ?? '-', 
                       );
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -421,7 +420,7 @@ class _ScanPageState extends State<ScanPage> {
                       );
                     }
                   }
-                  // Selalu navigasi kembali ke Dashboard setelah selesai
+                  
                   if (mounted) {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) => Dashboard()),
@@ -432,7 +431,7 @@ class _ScanPageState extends State<ScanPage> {
               ),
             ] else if (_showRecommendationInput)
               _isLoading
-                  ? const Center(child: CircularProgressIndicator()) // Tambahkan const
+                  ? const Center(child: CircularProgressIndicator()) 
                   : PrimaryButton(
                       text: 'Lihat Rekomendasi',
                       onPressed: _calculateRecommendation,
@@ -459,7 +458,7 @@ class SawahInputFields extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Label GKG
+        
         Text(
           'Gabah Kering Giling (GKG/ton)',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -467,7 +466,7 @@ class SawahInputFields extends StatelessWidget {
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 6), // Tambahkan const
+        const SizedBox(height: 6), 
         TextField(
           controller: gkgController,
           keyboardType: TextInputType.number,
@@ -480,10 +479,10 @@ class SawahInputFields extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Tambahkan const
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), 
           ),
         ),
-        const SizedBox(height: 16), // Tambahkan const
+        const SizedBox(height: 16), 
 
         // Label Luas
         Text(
@@ -493,7 +492,7 @@ class SawahInputFields extends StatelessWidget {
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 6), // Tambahkan const
+        const SizedBox(height: 6), 
         TextField(
           controller: luasController,
           keyboardType: TextInputType.number,
@@ -506,7 +505,7 @@ class SawahInputFields extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide.none,
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Tambahkan const
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12), 
           ),
         ),
       ],

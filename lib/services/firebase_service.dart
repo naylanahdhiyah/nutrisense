@@ -20,7 +20,7 @@ class FirebaseService {
         geoPoint = GeoPoint(position.latitude, position.longitude);
       }
 
-      // Simpan data ke subkoleksi user
+      
       await firestore.collection('users').doc(user.uid).collection('predictions').add({
         'prediction': prediction,
         'timestamp': FieldValue.serverTimestamp(),
@@ -30,7 +30,7 @@ class FirebaseService {
         'rekomendasi': rekomendasi,
       });
 
-      // Simpan data lokasi ke koleksi lokasi utama
+      
       if (geoPoint != null) {
         await firestore.collection('location').add({
           'location': geoPoint,

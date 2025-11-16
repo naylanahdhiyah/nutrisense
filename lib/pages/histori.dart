@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nutrisense/pages/detail.dart'; // Pastikan path ini benar
-import 'package:intl/intl.dart';
+import 'package:nutrisense/pages/detail.dart'; 
 
-// Impor file classification.dart Anda
-import 'package:nutrisense/utils/classification.dart'; // Sesuaikan path jika berbeda
+
+import 'package:nutrisense/utils/classification.dart';
 
 class HistoriPage extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class HistoriPage extends StatefulWidget {
 
 class _HistoriPageState extends State<HistoriPage> {
   List<Map<String, dynamic>> _predictions = [];
-  bool _isLoading = true; // Tambahkan state loading
+  bool _isLoading = true; 
 
   @override
   void initState() {
@@ -24,7 +23,7 @@ class _HistoriPageState extends State<HistoriPage> {
 
   Future<void> fetchHistory() async {
     setState(() {
-      _isLoading = true; // Set loading true saat mulai fetch
+      _isLoading = true; 
     });
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -41,21 +40,21 @@ class _HistoriPageState extends State<HistoriPage> {
 
         final predictions = querySnapshot.docs.map((doc) {
           final data = doc.data();
-          data['id'] = doc.id; // Tambahkan id dokumen ke dalam data
+          data['id'] = doc.id; 
           return data;
         }).toList();
 
         if (mounted) {
           setState(() {
             _predictions = predictions;
-            _isLoading = false; // Set loading false setelah data didapat
+            _isLoading = false; 
           });
         }
       } else {
         print('Tidak ada pengguna yang login.');
         if (mounted) {
           setState(() {
-            _isLoading = false; // Set loading false jika tidak ada user
+            _isLoading = false; 
           });
         }
       }
@@ -63,7 +62,7 @@ class _HistoriPageState extends State<HistoriPage> {
       print('Error fetching history: $e');
       if (mounted) {
         setState(() {
-          _isLoading = false; // Set loading false jika ada error
+          _isLoading = false; 
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal memuat histori: $e')),
@@ -77,9 +76,9 @@ class _HistoriPageState extends State<HistoriPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white, // Pastikan AppBar berwarna putih
-        elevation: 0, // Hapus shadow AppBar
-        leading: IconButton( // Tombol kembali
+        backgroundColor: Colors.white, 
+        elevation: 0, 
+        leading: IconButton( 
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () {
             Navigator.of(context).pop();
@@ -87,26 +86,26 @@ class _HistoriPageState extends State<HistoriPage> {
         ),
         centerTitle: true,
         title: const Text(
-          "Riwayat Scan", // Ubah judul
+          "Riwayat Scan", 
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: Colors.black, // Pastikan warna teks hitam
+            color: Colors.black, 
           ),
         ),
       ),
-      body: _isLoading // Tampilkan loading indicator saat data sedang diambil
+      body: _isLoading 
           ? const Center(child: CircularProgressIndicator())
           : _predictions.isEmpty
-              ? const Center(child: Text('Tidak ada riwayat scan.')) // Pesan jika kosong
+              ? const Center(child: Text('Tidak ada riwayat scan.')) 
               : ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Sesuaikan padding
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), 
                   itemCount: _predictions.length,
-                  separatorBuilder: (context, index) => Divider( // Garis pemisah tipis
+                  separatorBuilder: (context, index) => Divider( 
                     color: Colors.grey[300],
                     height: 1,
                     thickness: 0.5,
-                    indent: 0, // Pastikan garis penuh dari kiri ke kanan
+                    indent: 0, 
                     endIndent: 0,
                   ),
                   itemBuilder: (context, index) {
@@ -117,14 +116,14 @@ class _HistoriPageState extends State<HistoriPage> {
                     String formattedTime = 'N/A';
                     if (timestamp != null) {
                       final dateTime = timestamp.toDate();
-                      formattedDate = DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(dateTime); // Format tanggal
-                      formattedTime = DateFormat('HH:mm').format(dateTime); // Format waktu
+                      formattedDate = DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(dateTime); 
+                      formattedTime = DateFormat('HH:mm').format(dateTime); 
                     }
 
                     final String classificationCode = prediction['prediction'] ?? 'N/A';
                     final String classificationDescription = getClassDescription(classificationCode);
 
-                    return InkWell( // Menggunakan InkWell untuk efek tap
+                    return InkWell( 
                       onTap: () {
                         final docId = prediction['id'];
                         if (docId != null) {
@@ -142,8 +141,8 @@ class _HistoriPageState extends State<HistoriPage> {
                           }
                         }
                       },
-                      child: Padding( // Tambahkan padding di sini untuk konten ListTile
-                        padding: const EdgeInsets.symmetric(vertical: 12.0), // Padding vertikal untuk setiap item
+                      child: Padding( 
+                        padding: const EdgeInsets.symmetric(vertical: 12.0), 
                         child: Row(
                           children: [
                             Expanded(
@@ -151,12 +150,12 @@ class _HistoriPageState extends State<HistoriPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    formattedDate, // Tanggal sebagai title
+                                    formattedDate, 
                                     style: Theme.of(context).textTheme.bodySmall,
                                   ),
-                                  const SizedBox(height: 4), // Spasi antara title dan subtitle
+                                  const SizedBox(height: 4), 
                                   Text(
-                                    classificationDescription, // Klasifikasi sebagai subtitle
+                                    classificationDescription, 
                                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                       color: Colors.grey[700],
                                     ),
@@ -164,7 +163,7 @@ class _HistoriPageState extends State<HistoriPage> {
                                 ],
                               ),
                             ),
-                            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey), // Ikon panah
+                            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey), 
                           ],
                         ),
                       ),

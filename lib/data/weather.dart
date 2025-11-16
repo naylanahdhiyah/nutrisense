@@ -2,11 +2,11 @@ class WeatherModel {
   final String description;
   final String iconUrl;
   final double temperature;
-  final int humidity; // tambah
+  final int humidity; 
   final double windSpeed;
   final String windDirect;
   final int cloudCover;
-  final String visibility; // tambah
+  final String visibility;
 
   WeatherModel({
     required this.description,

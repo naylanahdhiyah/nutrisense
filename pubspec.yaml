@@ -56,6 +56,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -66,7 +67,10 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+flutter_launcher_icons:
+  android: "true"
+  image_path: "assets/icons/ic_launcher.png" # Path to your desired icon image
+  
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -105,6 +109,7 @@ flutter:
     - assets/icons/card_scan.png
     - assets/icons/card_history.png
     - assets/icons/card_insight.png
+    - assets/icons/ic_launcher.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -25,7 +25,7 @@ class _ImagePredictionPageState extends State<ImagePredictionPage> {
   bool _isLoading = false;
   File? _selectedImage;
 
-  // Fungsi untuk memilih gambar dari galeri
+ 
   Future<void> pickImageFromGallery() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -37,7 +37,7 @@ class _ImagePredictionPageState extends State<ImagePredictionPage> {
     }
   }
 
-  // Fungsi untuk mengambil gambar dari kamera
+
   Future<void> pickImageFromCamera() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
@@ -49,7 +49,7 @@ class _ImagePredictionPageState extends State<ImagePredictionPage> {
     }
   }
 
-  // Fungsi untuk mengirim gambar ke server
+
   Future<void> sendImageForPrediction(File imageFile) async {
     final url = Uri.parse('http://192.168.2.119:5000/predict');
 
@@ -73,10 +73,10 @@ class _ImagePredictionPageState extends State<ImagePredictionPage> {
 
         setState(() {
           _isLoading = false;
-          _prediction = _parsePrediction(result); // parse JSON
+          _prediction = _parsePrediction(result); 
         });
 
-        // Upload hasil prediksi ke Firebase
+
         await uploadResultToFirebase(_prediction!);
       } else {
         setState(() {
@@ -92,7 +92,7 @@ class _ImagePredictionPageState extends State<ImagePredictionPage> {
     }
   }
 
-  // Fungsi parsing hasil JSON prediksi
+
   String _parsePrediction(String responseBody) {
     try {
       final decoded = responseBody.contains('result')
